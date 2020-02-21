@@ -1,12 +1,13 @@
-              <html>
-
+<html>
 <head>
   <meta charset="utf-8" />
   <script src="wasm_exec.js"></script>
   <script>
     const go = new Go();
     WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
+
       go.run(result.instance);
+      document.getElementById("submitBtn").disabled = false;
     });
   </script>
   <style>
@@ -30,11 +31,13 @@
   <label for="watermark">Watermark Image</label>
   <input type="file" id="watermark" class="imgInput"/>
   <output for="watermark" id="watermarkOutput"></output>
-
-  <output></output>
+  <br/>
+  <br/>
 
 </form>
 
+<button id="submitBtn" type="button" onclick="test()" disabled>Run</button>
+<output id="result"></output>
 </body>
 <script>
 
@@ -50,13 +53,13 @@
           let reader = new FileReader()
 
           let img = document.createElement("img");
-          img.className = "preview"
-          img.src = event.target.result
+          img.className = "preview";
+          img.src = event.target.result;
           reader.onload = function(e){
-            img.src = e.target.result
-          }
-          reader.readAsDataURL(event.target.files[0])
-          outputDom.appendChild(img)
+            img.src = e.target.result;
+          };
+          reader.readAsDataURL(event.target.files[0]);
+          outputDom.appendChild(img);
         }
 
     });
